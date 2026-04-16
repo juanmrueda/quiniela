@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { CheckCircle2, Clock, Lock, Trophy } from 'lucide-react'
 import FlagImg from '@/components/flag-img'
 
-type Team = { id: string; name_es: string; code: string; group_letter: string } | null
+type Team = { id: string; name_es: string; code: string; group_name: string } | null
 type Match = {
   id: string
   kickoff_at: string
@@ -81,7 +81,7 @@ export default function PartidosList({
   const [tab, setTab] = useState<string>('A')
 
   const groupMatches = (group: string) =>
-    matches.filter(m => m.phase === 'group' && (m.home as any)?.group_letter === group)
+    matches.filter(m => m.phase === 'group' && (m.home as any)?.group_name === group)
 
   const knockoutMatches = (phase: string) =>
     matches.filter(m => m.phase === phase)
@@ -174,7 +174,7 @@ export default function PartidosList({
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-slate-50">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     {m.phase === 'group'
-                      ? `Grupo ${(m.home as any)?.group_letter ?? ''}`
+                      ? `Grupo ${(m.home as any)?.group_name ?? ''}`
                       : PHASE_LABELS[m.phase] ?? m.phase}
                   </span>
                   <StatusBadge status={m.status} hasPred={hasPred} />

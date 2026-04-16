@@ -10,7 +10,7 @@ export default async function PartidosPage() {
   const [{ data: matches }, { data: predictions }] = await Promise.all([
     supabase
       .from('matches')
-      .select('id, kickoff_at, phase, status, home_score, away_score, home:home_team_id(id, name_es, code, group_letter, flag_url), away:away_team_id(id, name_es, code, group_letter, flag_url)')
+      .select('id, kickoff_at, phase, status, home_score, away_score, home:home_team_id(id, name_es, code, group_name, flag_url), away:away_team_id(id, name_es, code, group_name, flag_url)')
       .order('kickoff_at'),
     supabase
       .from('predictions')
