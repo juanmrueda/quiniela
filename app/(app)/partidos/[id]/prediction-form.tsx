@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useEffect } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, CheckCircle2, Lock, Trophy } from 'lucide-react'
@@ -79,37 +79,21 @@ function ScoreInput({
 
 export default function PredictionForm({
   match,
+  prediction,
   userId,
 }: {
   match: Match
+  prediction: { home_score: number | null; away_score: number | null; points_earned: number | null } | null
   userId: string
 }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [homeScore, setHomeScore] = useState(0)
-  const [awayScore, setAwayScore] = useState(0)
+  const [homeScore, setHomeScore] = useState(prediction?.home_score ?? 0)
+  const [awayScore, setAwayScore] = useState(prediction?.away_score ?? 0)
   const [saved, setSaved] = useState(false)
-  const [hasPrediction, setHasPrediction] = useState(false)
-  const [pointsEarned, setPointsEarned] = useState<number | null>(null)
+  const [hasPrediction, setHasPrediction] = useState(!!prediction)
+  const [pointsEarned] = useState<number | null>(prediction?.points_earned ?? null)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const supabase = createClient()
-    supabase
-      .from('predictions')
-      .select('home_score, away_score, points_earned')
-      .eq('match_id', match.id)
-      .eq('user_id', userId)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) {
-          setHomeScore(data.home_score ?? 0)
-          setAwayScore(data.away_score ?? 0)
-          setHasPrediction(true)
-          setPointsEarned(data.points_earned)
-        }
-      })
-  }, [match.id, userId])
 
   const locked = match.status !== 'scheduled'
   const isFinished = match.status === 'finished'
