@@ -11,7 +11,7 @@ export default async function PartidoDetailPage({ params }: { params: Promise<{ 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const [{ data: match }, { data: prediction }, { data: myStats }] = await Promise.all([
+  const [{ data: match }, { data: allPredictions }] = await Promise.all([
     supabase
       .from('matches')
       .select('id, kickoff_at, phase, status, home_score, away_score, lock_at, home:home_team_id(id, name_es, code, group_name, flag_url), away:away_team_id(id, name_es, code, group_name, flag_url)')
@@ -19,16 +19,11 @@ export default async function PartidoDetailPage({ params }: { params: Promise<{ 
       .single(),
     supabase
       .from('predictions')
-      .select('home_score, away_score, points_earned')
-      .eq('match_id', matchId)
-      .eq('user_id', user.id)
-      .maybeSingle(),
-    supabase
-      .from('leaderboard')
-      .select('total_points')
-      .eq('user_id', user.id)
-      .maybeSingle(),
+      .select('match_id, home_score, away_score, points_earned')
+      .eq('user_id', user.id),
   ])
+
+  const prediction = allPredictions?.find(p => p.match_id === matchId) ?? null
 
   if (!match) notFound()
 
