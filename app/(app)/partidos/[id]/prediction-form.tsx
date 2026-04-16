@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, CheckCircle2, Lock, Trophy } from 'lucide-react'
@@ -79,19 +79,37 @@ function ScoreInput({
 
 export default function PredictionForm({
   match,
-  prediction,
   userId,
 }: {
   match: Match
-  prediction: { home_score: number | null; away_score: number | null; points_earned: number | null } | null
   userId: string
 }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [homeScore, setHomeScore] = useState(prediction?.home_score ?? 0)
-  const [awayScore, setAwayScore] = useState(prediction?.away_score ?? 0)
-  const [saved, setSaved] = useState(!!prediction)
+  const [homeScore, setHomeScore] = useState(0)
+  const [awayScore, setAwayScore] = useState(0)
+  const [saved, setSaved] = useState(false)
+  const [hasPrediction, setHasPrediction] = useState(false)
+  const [pointsEarned, setPointsEarned] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase
+      .from('predictions')
+      .select('home_score, away_score, points_earned')
+      .eq('match_id', match.id)
+      .eq('user_id', userId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setHomeScore(data.home_score ?? 0)
+          setAwayScore(data.away_score ?? 0)
+          setHasPrediction(true)
+          setPointsEarned(data.points_earned)
+        }
+      })
+  }, [match.id, userId])
 
   const locked = match.status !== 'scheduled'
   const isFinished = match.status === 'finished'
@@ -112,6 +130,7 @@ export default function PredictionForm({
       if (err) {
         setError('No se pudo guardar. Intenta de nuevo.')
       } else {
+        setHasPrediction(true)
         setSaved(true)
         setTimeout(() => router.push('/partidos'), 1200)
       }
@@ -165,7 +184,7 @@ export default function PredictionForm({
                 <ScoreInput value={homeScore} onChange={setHomeScore} disabled={isLocked} />
               ) : (
                 <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
-                  <span className="text-3xl font-black text-slate-300">{prediction?.home_score ?? '?'}</span>
+                  <span className="text-3xl font-black text-slate-300">{homeScore}</span>
                 </div>
               )}
             </div>
@@ -192,7 +211,7 @@ export default function PredictionForm({
                 <ScoreInput value={awayScore} onChange={setAwayScore} disabled={isLocked} />
               ) : (
                 <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
-                  <span className="text-3xl font-black text-slate-300">{prediction?.away_score ?? '?'}</span>
+                  <span className="text-3xl font-black text-slate-300">{awayScore}</span>
                 </div>
               )}
             </div>
@@ -200,12 +219,12 @@ export default function PredictionForm({
         </div>
 
         {/* Points earned (finished) */}
-        {isFinished && prediction?.points_earned != null && (
+        {isFinished && pointsEarned != null && (
           <div className="border-t border-slate-50 px-5 py-4 flex items-center gap-3">
             <Trophy size={16} className="text-amber-500" />
             <div>
               <p className="text-xs text-slate-400 font-semibold">Puntos ganados en este partido</p>
-              <p className="text-lg font-black text-slate-900">{prediction.points_earned} pts</p>
+              <p className="text-lg font-black text-slate-900">{pointsEarned} pts</p>
             </div>
           </div>
         )}
@@ -240,7 +259,7 @@ export default function PredictionForm({
               </span>
             ) : isPending ? (
               'Guardando...'
-            ) : prediction ? (
+            ) : hasPrediction ? (
               'Actualizar predicción →'
             ) : (
               'Guardar predicción →'
