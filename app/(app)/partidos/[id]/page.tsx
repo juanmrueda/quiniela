@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import PredictionForm from './prediction-form'
 
-export default async function PartidoDetailPage({ params }: { params: { id: string } }) {
+export default async function PartidoDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -11,12 +12,12 @@ export default async function PartidoDetailPage({ params }: { params: { id: stri
     supabase
       .from('matches')
       .select('id, kickoff_at, phase, status, home_score, away_score, lock_at, home:home_team_id(id, name_es, code, group_name, flag_url), away:away_team_id(id, name_es, code, group_name, flag_url)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single(),
     supabase
       .from('predictions')
       .select('home_score, away_score, points_earned')
-      .eq('match_id', params.id)
+      .eq('match_id', id)
       .eq('user_id', user.id)
       .maybeSingle(),
     supabase
