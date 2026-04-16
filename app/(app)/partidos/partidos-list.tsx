@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { CheckCircle2, Clock, Lock, Trophy } from 'lucide-react'
+import FlagImg from '@/components/flag-img'
 
 type Team = { id: string; name_es: string; code: string; group_letter: string } | null
 type Match = {
@@ -184,7 +185,9 @@ export default function PartidosList({
                   <div className="flex items-center gap-3">
                     {/* Home team */}
                     <div className="flex-1 flex items-center gap-2.5">
-                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-lg flex-shrink-0">🏳️</div>
+                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <FlagImg url={(m.home as any)?.flag_url} name={(m.home as any)?.name_es} size={40} />
+                      </div>
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-slate-900 truncate">{(m.home as any)?.name_es ?? 'TBD'}</p>
                         <p className="text-[10px] text-slate-400 font-mono">{(m.home as any)?.code ?? '---'}</p>
@@ -217,7 +220,9 @@ export default function PartidosList({
                         <p className="text-sm font-bold text-slate-900 truncate">{(m.away as any)?.name_es ?? 'TBD'}</p>
                         <p className="text-[10px] text-slate-400 font-mono">{(m.away as any)?.code ?? '---'}</p>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-lg flex-shrink-0">🏳️</div>
+                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <FlagImg url={(m.away as any)?.flag_url} name={(m.away as any)?.name_es} size={40} />
+                      </div>
                     </div>
                   </div>
 

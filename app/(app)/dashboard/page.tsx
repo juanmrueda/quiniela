@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Trophy, Zap, Clock, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
+import FlagImg from '@/components/flag-img'
 
 function formatCountdown(kickoff: string) {
   const diff = new Date(kickoff).getTime() - Date.now()
@@ -31,7 +32,7 @@ export default async function DashboardPage() {
       supabase.from('profiles').select('full_name, avatar_url, company').eq('id', user.id).single(),
       supabase.from('leaderboard').select('*').order('total_points', { ascending: false }),
       supabase.from('matches')
-        .select('id, kickoff_at, phase, home:home_team_id(name_es, code), away:away_team_id(name_es, code)')
+        .select('id, kickoff_at, phase, home:home_team_id(name_es, code, flag_url), away:away_team_id(name_es, code, flag_url)')
         .eq('status', 'scheduled')
         .gte('kickoff_at', new Date().toISOString())
         .order('kickoff_at')
@@ -116,7 +117,9 @@ export default async function DashboardPage() {
           <div className="px-5 py-5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1 text-center">
-                <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl mx-auto mb-2">🏳️</div>
+                <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mx-auto mb-2 overflow-hidden">
+                  <FlagImg url={(nextMatch.home as any)?.flag_url} name={(nextMatch.home as any)?.name_es} size={56} />
+                </div>
                 <p className="text-sm font-bold text-slate-900">{(nextMatch.home as any)?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{(nextMatch.home as any)?.code}</p>
               </div>
@@ -131,7 +134,9 @@ export default async function DashboardPage() {
                 </p>
               </div>
               <div className="flex-1 text-center">
-                <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl mx-auto mb-2">🏳️</div>
+                <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mx-auto mb-2 overflow-hidden">
+                  <FlagImg url={(nextMatch.away as any)?.flag_url} name={(nextMatch.away as any)?.name_es} size={56} />
+                </div>
                 <p className="text-sm font-bold text-slate-900">{(nextMatch.away as any)?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{(nextMatch.away as any)?.code}</p>
               </div>

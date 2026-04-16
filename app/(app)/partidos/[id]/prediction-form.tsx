@@ -4,9 +4,10 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, CheckCircle2, Lock, Trophy } from 'lucide-react'
+import FlagImg from '@/components/flag-img'
 import Link from 'next/link'
 
-type Team = { id: string; name_es: string; code: string; group_letter: string }
+type Team = { id: string; name_es: string; code: string; group_letter: string; flag_url?: string | null }
 type Match = {
   id: string
   kickoff_at: string
@@ -149,7 +150,9 @@ export default function PredictionForm({
           <div className="flex items-center gap-4">
             {/* Home */}
             <div className="flex-1 flex flex-col items-center gap-2">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl">🏳️</div>
+              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden">
+                <FlagImg url={home?.flag_url} name={home?.name_es} size={64} />
+              </div>
               <div className="text-center">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{home?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{home?.code ?? '---'}</p>
@@ -174,7 +177,9 @@ export default function PredictionForm({
 
             {/* Away */}
             <div className="flex-1 flex flex-col items-center gap-2">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl">🏳️</div>
+              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden">
+                <FlagImg url={home?.flag_url} name={home?.name_es} size={64} />
+              </div>
               <div className="text-center">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{away?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{away?.code ?? '---'}</p>
