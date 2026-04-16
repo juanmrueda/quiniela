@@ -178,7 +178,7 @@ export default function PredictionForm({
             {/* Away */}
             <div className="flex-1 flex flex-col items-center gap-2">
               <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden">
-                <FlagImg url={home?.flag_url} name={home?.name_es} size={64} />
+                <FlagImg url={away?.flag_url} name={away?.name_es} size={64} />
               </div>
               <div className="text-center">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{away?.name_es ?? 'TBD'}</p>
