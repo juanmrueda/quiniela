@@ -44,7 +44,7 @@ export default async function DashboardPage() {
   const myStats   = leaderboard?.find(r => r.user_id === user.id)
   const myPoints  = myStats?.total_points ?? 0
   const total     = totalUsers ?? 0
-  const totalPot  = total * 100 * 2
+  const totalPot  = total * 15 * 2
   const prizes    = [Math.round(totalPot * 0.5), Math.round(totalPot * 0.3), Math.round(totalPot * 0.2)]
   const myPrize   = myRank >= 1 && myRank <= 3 ? prizes[myRank - 1] : 0
   const firstName = profile?.full_name?.split(' ')[0] ?? 'Jugador'
@@ -83,7 +83,7 @@ export default async function DashboardPage() {
           <div className="flex-1">
             <p className="text-white/60 text-xs">Premio si terminas en esta posición</p>
             <p className="font-bold text-sm mt-0.5">
-              {myPrize > 0 ? `Q.${myPrize.toLocaleString('es-GT')}` : 'Fuera del top 3 aún'}
+              {myPrize > 0 ? `$${myPrize.toLocaleString('en-US')}` : 'Fuera del top 3 aún'}
             </p>
           </div>
           <Link href="/ranking" className="text-white/50 hover:text-white text-xs font-semibold transition-colors whitespace-nowrap">
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
-          <p className="text-xl font-black text-amber-500">Q.{totalPot.toLocaleString('es-GT')}</p>
+          <p className="text-xl font-black text-amber-500">${totalPot.toLocaleString('en-US')}</p>
           <p className="text-[11px] text-slate-400 mt-0.5 font-semibold">Pozo total</p>
         </div>
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">

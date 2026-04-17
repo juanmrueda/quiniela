@@ -16,14 +16,14 @@ export default async function RankingPage() {
   ])
 
   const total = totalUsers ?? 0
-  const totalPot = total * 100 * 2
+  const totalPot = total * 15 * 2
   const prizes = PRIZE_PCT.map(p => Math.round(totalPot * p))
 
   return (
     <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-black text-slate-900">Ranking</h1>
-        <p className="text-slate-400 text-sm mt-0.5">{total} participantes · Q.{totalPot.toLocaleString('es-GT')} en premios</p>
+        <p className="text-slate-400 text-sm mt-0.5">{total} participantes · ${totalPot.toLocaleString('en-US')} USD en premios</p>
       </div>
 
       {/* Prize podium */}
@@ -31,7 +31,7 @@ export default async function RankingPage() {
         {prizes.map((prize, i) => (
           <div key={i} className={`rounded-2xl p-3 text-center border ${i === 0 ? 'bg-amber-50 border-amber-200' : i === 1 ? 'bg-slate-50 border-slate-200' : 'bg-orange-50 border-orange-200'}`}>
             <p className="text-lg">{MEDALS[i]}</p>
-            <p className="text-sm font-black text-slate-900 mt-1">Q.{prize.toLocaleString('es-GT')}</p>
+            <p className="text-sm font-black text-slate-900 mt-1">${prize.toLocaleString('en-US')} USD</p>
             <p className="text-[10px] text-slate-400 font-bold">{i + 1}er lugar</p>
           </div>
         ))}
