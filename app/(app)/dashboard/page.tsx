@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         .gte('kickoff_at', new Date().toISOString())
         .order('kickoff_at')
         .limit(4),
-      supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'user'),
+      supabase.from('leaderboard').select('*', { count: 'exact', head: true }),
     ])
 
   const myRank    = (leaderboard?.findIndex(r => r.user_id === user.id) ?? -1) + 1
