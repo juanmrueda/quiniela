@@ -182,20 +182,20 @@ export default function PartidosList({
 
                 {/* Match body */}
                 <div className="px-4 py-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-start gap-3">
                     {/* Home team */}
-                    <div className="flex-1 flex items-center gap-2.5">
-                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <FlagImg url={(m.home as any)?.flag_url} name={(m.home as any)?.name_es} size={40} />
+                    <div className="flex-1 flex items-start gap-2">
+                      <div className="w-9 h-9 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden mt-0.5">
+                        <FlagImg url={(m.home as any)?.flag_url} name={(m.home as any)?.name_es} size={36} />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-slate-900 truncate">{(m.home as any)?.name_es ?? 'TBD'}</p>
+                        <p className="text-sm font-bold text-slate-900 leading-tight line-clamp-2">{(m.home as any)?.name_es ?? 'TBD'}</p>
                         <p className="text-[10px] text-slate-400 font-mono">{(m.home as any)?.code ?? '---'}</p>
                       </div>
                     </div>
 
                     {/* Score / VS */}
-                    <div className="flex-shrink-0 text-center w-16">
+                    <div className="flex-shrink-0 text-center w-14 pt-0.5">
                       {(isFinished || isLive) && m.home_score !== null ? (
                         <div className="flex items-center justify-center gap-1">
                           <span className={`text-xl font-black ${isLive ? 'text-green-600' : 'text-slate-900'}`}>{m.home_score}</span>
@@ -215,13 +215,13 @@ export default function PartidosList({
                     </div>
 
                     {/* Away team */}
-                    <div className="flex-1 flex items-center gap-2.5 justify-end">
+                    <div className="flex-1 flex items-start gap-2 justify-end">
                       <div className="min-w-0 text-right">
-                        <p className="text-sm font-bold text-slate-900 truncate">{(m.away as any)?.name_es ?? 'TBD'}</p>
+                        <p className="text-sm font-bold text-slate-900 leading-tight line-clamp-2">{(m.away as any)?.name_es ?? 'TBD'}</p>
                         <p className="text-[10px] text-slate-400 font-mono">{(m.away as any)?.code ?? '---'}</p>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <FlagImg url={(m.away as any)?.flag_url} name={(m.away as any)?.name_es} size={40} />
+                      <div className="w-9 h-9 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden mt-0.5">
+                        <FlagImg url={(m.away as any)?.flag_url} name={(m.away as any)?.name_es} size={36} />
                       </div>
                     </div>
                   </div>
