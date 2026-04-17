@@ -52,9 +52,15 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-slate-400 text-sm">Bienvenido de vuelta,</p>
-        <h1 className="text-2xl font-black text-slate-900">{firstName} 👋</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-slate-400 text-sm">Bienvenido de vuelta,</p>
+          <h1 className="text-2xl font-black text-slate-900">{firstName} 👋</h1>
+        </div>
+        {profile?.avatar_url
+          ? <img src={profile.avatar_url} alt="" className="w-12 h-12 rounded-full border-2 border-white shadow-md flex-shrink-0" />
+          : <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center text-lg font-black text-slate-500 flex-shrink-0">{firstName[0]}</div>
+        }
       </div>
 
       {/* Ranking hero */}
