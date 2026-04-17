@@ -195,22 +195,30 @@ export default function PartidosList({
                     </div>
 
                     {/* Score / VS */}
-                    <div className="flex-shrink-0 text-center w-14 pt-0.5">
+                    <div className="flex-shrink-0 text-center w-16 pt-0.5">
                       {(isFinished || isLive) && m.home_score !== null ? (
                         <div className="flex items-center justify-center gap-1">
                           <span className={`text-xl font-black ${isLive ? 'text-green-600' : 'text-slate-900'}`}>{m.home_score}</span>
                           <span className="text-slate-300 font-light">-</span>
                           <span className={`text-xl font-black ${isLive ? 'text-green-600' : 'text-slate-900'}`}>{m.away_score}</span>
                         </div>
+                      ) : hasPred && pred ? (
+                        <div className="flex flex-col items-center gap-0.5">
+                          <div className="flex items-center gap-1">
+                            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+                              <span className="text-base font-black text-white">{pred.home_score}</span>
+                            </div>
+                            <span className="text-slate-300 font-black text-xs">-</span>
+                            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+                              <span className="text-base font-black text-white">{pred.away_score}</span>
+                            </div>
+                          </div>
+                          <p className="text-[9px] text-emerald-600 font-bold">Tu pred.</p>
+                        </div>
                       ) : (
                         <div className="bg-slate-100 rounded-lg px-2 py-1.5">
                           <span className="text-xs font-black text-slate-400">VS</span>
                         </div>
-                      )}
-                      {hasPred && pred && !isFinished && (
-                        <p className="text-[10px] text-slate-400 mt-1 font-mono">
-                          {pred.home_score}-{pred.away_score}
-                        </p>
                       )}
                     </div>
 
