@@ -11,8 +11,8 @@ export default async function RankingPage() {
   if (!user) redirect('/login')
 
   const [{ data: leaderboard }, { count: totalUsers }] = await Promise.all([
-    supabase.from('leaderboard').select('*').order('total_points', { ascending: false }),
-    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'user'),
+    supabase.from('leaderboard').select('*').order('total_points', { ascending: false }).order('full_name', { ascending: true }),
+    supabase.from('leaderboard').select('*', { count: 'exact', head: true }),
   ])
 
   const total = totalUsers ?? 0

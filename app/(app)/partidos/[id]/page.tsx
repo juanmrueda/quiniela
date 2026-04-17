@@ -13,7 +13,7 @@ export default async function PartidoDetailPage({ params }: { params: Promise<{ 
 
   const { data: match } = await supabase
     .from('matches')
-    .select('id, kickoff_at, phase, status, home_score, away_score, lock_at, home:home_team_id(id, name_es, code, group_name, flag_url), away:away_team_id(id, name_es, code, group_name, flag_url), predictions(home_score, away_score, points_earned)')
+    .select('id, kickoff_at, phase, status, home_score, away_score, lock_at, home:home_team_id(id, name_es, code, group_name, flag_url), away:away_team_id(id, name_es, code, group_name, flag_url), predictions(home_score, away_score, points_total)')
     .eq('id', matchId)
     .eq('predictions.user_id', user.id)
     .single()

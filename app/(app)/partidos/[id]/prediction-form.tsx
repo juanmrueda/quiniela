@@ -83,7 +83,7 @@ export default function PredictionForm({
   userId,
 }: {
   match: Match
-  prediction: { home_score: number | null; away_score: number | null; points_earned: number | null } | null
+  prediction: { home_score: number | null; away_score: number | null; points_total: number | null } | null
   userId: string
 }) {
   const router = useRouter()
@@ -92,7 +92,7 @@ export default function PredictionForm({
   const [awayScore, setAwayScore] = useState(prediction?.away_score ?? 0)
   const [saved, setSaved] = useState(false)
   const [hasPrediction, setHasPrediction] = useState(!!prediction)
-  const [pointsEarned] = useState<number | null>(prediction?.points_earned ?? null)
+  const [pointsEarned] = useState<number | null>(prediction?.points_total ?? null)
   const [error, setError] = useState<string | null>(null)
 
   const locked = match.status !== 'scheduled'

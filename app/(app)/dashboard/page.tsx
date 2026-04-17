@@ -30,7 +30,7 @@ export default async function DashboardPage() {
   const [{ data: profile }, { data: leaderboard }, { data: nextMatches }, { count: totalUsers }] =
     await Promise.all([
       supabase.from('profiles').select('full_name, avatar_url, company').eq('id', user.id).single(),
-      supabase.from('leaderboard').select('*').order('total_points', { ascending: false }),
+      supabase.from('leaderboard').select('*').order('total_points', { ascending: false }).order('full_name', { ascending: true }),
       supabase.from('matches')
         .select('id, kickoff_at, phase, home:home_team_id(name_es, code, flag_url), away:away_team_id(name_es, code, flag_url)')
         .eq('status', 'scheduled')
