@@ -53,23 +53,23 @@ function ScoreInput({
   disabled: boolean
 }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <button
         type="button"
         disabled={disabled || value <= 0}
         onClick={() => onChange(value - 1)}
-        className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-black text-lg transition-colors flex items-center justify-center"
+        className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-black text-base transition-colors flex items-center justify-center flex-shrink-0"
       >
         −
       </button>
-      <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center">
-        <span className="text-3xl font-black text-white">{value}</span>
+      <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+        <span className="text-2xl font-black text-white">{value}</span>
       </div>
       <button
         type="button"
         disabled={disabled}
         onClick={() => onChange(value + 1)}
-        className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-black text-lg transition-colors flex items-center justify-center"
+        className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-black text-base transition-colors flex items-center justify-center flex-shrink-0"
       >
         +
       </button>
@@ -150,52 +150,52 @@ export default function PredictionForm({
           </div>
         )}
         <div className="px-5 py-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-3">
             {/* Home */}
             <div className="flex-1 flex flex-col items-center gap-2">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                 <FlagImg url={home?.flag_url} name={home?.name_es} size={64} />
               </div>
-              <div className="text-center">
+              <div className="text-center min-h-[2.5rem]">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{home?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{home?.code ?? '---'}</p>
               </div>
               {isFinished && match.home_score !== null ? (
-                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center">
-                  <span className="text-3xl font-black text-white">{match.home_score}</span>
+                <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center">
+                  <span className="text-2xl font-black text-white">{match.home_score}</span>
                 </div>
               ) : !isLocked ? (
                 <ScoreInput value={homeScore} onChange={setHomeScore} disabled={isLocked} />
               ) : (
-                <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
-                  <span className="text-3xl font-black text-slate-300">{homeScore}</span>
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center">
+                  <span className="text-2xl font-black text-slate-300">{homeScore}</span>
                 </div>
               )}
             </div>
 
             {/* Separator */}
-            <div className="flex flex-col items-center gap-1 flex-shrink-0">
-              <span className="text-slate-200 font-black text-2xl">—</span>
+            <div className="flex flex-col items-center flex-shrink-0 pt-20">
+              <span className="text-slate-300 font-black text-xl">VS</span>
             </div>
 
             {/* Away */}
             <div className="flex-1 flex flex-col items-center gap-2">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                 <FlagImg url={away?.flag_url} name={away?.name_es} size={64} />
               </div>
-              <div className="text-center">
+              <div className="text-center min-h-[2.5rem]">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{away?.name_es ?? 'TBD'}</p>
                 <p className="text-xs text-slate-400 font-mono">{away?.code ?? '---'}</p>
               </div>
               {isFinished && match.away_score !== null ? (
-                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center">
-                  <span className="text-3xl font-black text-white">{match.away_score}</span>
+                <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center">
+                  <span className="text-2xl font-black text-white">{match.away_score}</span>
                 </div>
               ) : !isLocked ? (
                 <ScoreInput value={awayScore} onChange={setAwayScore} disabled={isLocked} />
               ) : (
-                <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
-                  <span className="text-3xl font-black text-slate-300">{awayScore}</span>
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center">
+                  <span className="text-2xl font-black text-slate-300">{awayScore}</span>
                 </div>
               )}
             </div>
