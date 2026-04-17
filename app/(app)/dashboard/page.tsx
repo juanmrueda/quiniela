@@ -32,8 +32,9 @@ export default async function DashboardPage() {
       supabase.from('profiles').select('full_name, avatar_url, company').eq('id', user.id).single(),
       supabase.from('leaderboard').select('*').order('total_points', { ascending: false }).order('full_name', { ascending: true }),
       supabase.from('matches')
-        .select('id, kickoff_at, phase, home:home_team_id(name_es, code, flag_url), away:away_team_id(name_es, code, flag_url)')
+        .select('id, kickoff_at, phase, home:home_team_id(name_es, code, flag_url), away:away_team_id(name_es, code, flag_url), predictions(home_score, away_score)')
         .eq('status', 'scheduled')
+        .eq('predictions.user_id', user.id)
         .gte('kickoff_at', new Date().toISOString())
         .order('kickoff_at')
         .limit(4),
@@ -49,6 +50,7 @@ export default async function DashboardPage() {
   const myPrize   = myRank >= 1 && myRank <= 3 ? prizes[myRank - 1] : 0
   const firstName = profile?.full_name?.split(' ')[0] ?? 'Jugador'
   const nextMatch = nextMatches?.[0]
+  const nextPred  = (nextMatch as any)?.predictions?.[0] ?? null
 
   return (
     <div className="space-y-5">
@@ -130,9 +132,24 @@ export default async function DashboardPage() {
                 <p className="text-xs text-slate-400 font-mono">{(nextMatch.home as any)?.code}</p>
               </div>
               <div className="text-center flex-shrink-0">
-                <div className="bg-slate-100 rounded-xl px-3 py-2 mb-2">
-                  <span className="text-xs font-black text-slate-400">VS</span>
-                </div>
+                {nextPred ? (
+                  <div className="mb-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center">
+                        <span className="text-xl font-black text-white">{nextPred.home_score}</span>
+                      </div>
+                      <span className="text-slate-300 font-black text-sm">-</span>
+                      <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center">
+                        <span className="text-xl font-black text-white">{nextPred.away_score}</span>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-emerald-600 font-bold mt-1">Tu predicción</p>
+                  </div>
+                ) : (
+                  <div className="bg-slate-100 rounded-xl px-3 py-2 mb-2">
+                    <span className="text-xs font-black text-slate-400">VS</span>
+                  </div>
+                )}
                 <p className="text-[11px] text-slate-400 font-semibold">
                   {new Date(nextMatch.kickoff_at).toLocaleTimeString('es-GT', {
                     hour: '2-digit', minute: '2-digit', timeZone: 'America/Guatemala',
@@ -151,7 +168,7 @@ export default async function DashboardPage() {
               href={`/partidos/${nextMatch.id}`}
               className="mt-5 block w-full bg-slate-900 hover:bg-red-600 text-white text-sm font-bold py-3 rounded-xl text-center transition-all duration-200"
             >
-              Ingresar predicción →
+              {nextPred ? 'Actualizar predicción →' : 'Ingresar predicción →'}
             </Link>
           </div>
           <div className="px-5 pb-4 -mt-1">
