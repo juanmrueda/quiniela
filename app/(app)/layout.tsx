@@ -10,9 +10,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, role, company')
+    .select('full_name, avatar_url, role, company, terms_accepted_at')
     .eq('id', user.id)
     .single()
+
+  if (profile && !profile.terms_accepted_at) {
+    redirect('/bienvenida')
+  }
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
