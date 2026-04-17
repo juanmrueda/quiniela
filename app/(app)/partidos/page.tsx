@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import PartidosList from './partidos-list'
 
 export default async function PartidosPage() {
@@ -20,5 +21,9 @@ export default async function PartidosPage() {
 
   const predMap = new Map((predictions ?? []).map(p => [p.match_id, p]))
 
-  return <PartidosList matches={(matches ?? []) as any[]} predMap={predMap} />
+  return (
+    <Suspense>
+      <PartidosList matches={(matches ?? []) as any[]} predMap={predMap} />
+    </Suspense>
+  )
 }

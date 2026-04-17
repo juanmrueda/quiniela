@@ -116,7 +116,9 @@ export default function PredictionForm({
       } else {
         setHasPrediction(true)
         setSaved(true)
-        setTimeout(() => router.push('/partidos'), 1200)
+        const group = (match.home as any)?.group_name
+        const back = group ? `/partidos?grupo=${group}` : '/partidos'
+        setTimeout(() => router.push(back), 1200)
       }
     })
   }
@@ -127,7 +129,7 @@ export default function PredictionForm({
   return (
     <div className="space-y-4 max-w-lg mx-auto">
       {/* Back */}
-      <Link href="/partidos" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">
+      <Link href={`/partidos${(match.home as any)?.group_name ? `?grupo=${(match.home as any).group_name}` : ''}`} className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">
         <ArrowLeft size={15} />
         Todos los partidos
       </Link>

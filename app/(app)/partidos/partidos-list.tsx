@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle2, Clock, Lock, Trophy } from 'lucide-react'
 import FlagImg from '@/components/flag-img'
@@ -78,7 +79,9 @@ export default function PartidosList({
   matches: Match[]
   predMap: Map<string, { home_score: number | null; away_score: number | null }>
 }) {
-  const [tab, setTab] = useState<string>('A')
+  const searchParams = useSearchParams()
+  const initialTab = searchParams.get('grupo') ?? 'A'
+  const [tab, setTab] = useState<string>(GROUPS.includes(initialTab) ? initialTab : 'A')
 
   const groupMatches = (group: string) =>
     matches.filter(m => m.phase === 'group' && (m.home as any)?.group_name === group)
